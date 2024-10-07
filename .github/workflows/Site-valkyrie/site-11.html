@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script>
+        let unlockAttempts = 0;
+        const maxAttempts = 3;
+        let securityTimeout;
+        const passwordRegex = /^[a-zA-Z0-9]+$/;
+
+        const accessLevels = {
+            "Level 1": "1111",
+            "Level 2": "2222",
+            "Level 3": "3333",
+            "Level 4": "4444",
+            "Admin": "2137"
+        };
+
+        let unlockedLevels = {
+            "Level 1": false,
+            "Level 2": false,
+            "Level 3": false,
+            "Level 4": false,
+            "Admin": false
+        };
+
+        function unlockClassifiedFiles(level) {
+            const files = document.getElementById(`classified-files-level-${level}`);
+            const password = prompt(`Input Password for Classified Files (Level ${level}):`);
+            const attemptsLeft = maxAttempts - unlockAttempts;
+
+            if (passwordRegex.test(password)) {
+                if (password === accessLevels[`Level ${level}`]) {
+                    files.classList.remove("hidden");
+                    unlockedLevels[`Level ${level}`] = true;
+                    unlockAttempts = 0;
+                    startSecurityTimeout();
+                    console.log(`Classified Level ${level} files have been unlocked.`);
+                    document.querySelector(`button[onclick="toggleClassifiedFiles(${level})"]`).textContent = `Lock Classified Files (Level ${level})`;
+                } else {
+                    unlockAttempts++;
+                    alert(`Clearance Denied. ${attemptsLeft} attempts left.`);
+                }
+            } else {
+                alert("Password must be alphanumeric.");
+            }
+
+            if (unlockAttempts >= maxAttempts) {
+                alert("You have been locked out after multiple failed attempts.");
+            }
+        }
+
+        function unlockAdminFiles() {
+            const adminFiles = document.getElementById("admin-files");
+            const password = prompt("Input Password for Admin Files:");
+            const attemptsLeft = maxAttempts - unlockAttempts;
+
+            if (passwordRegex.test(password)) {
+                if (password === accessLevels["Admin"]) {
+                    adminFiles.classList.remove("hidden");
+                    unlockedLevels["Admin"] = true;
+                    unlockAttempts = 0;
+                    startSecurityTimeout();
+                    console.log("Admin files have been unlocked.");
+                    document.querySelector('button[onclick="toggleAdminFiles()"]').textContent = "Lock Admin Files";
+                } else {
+                    unlockAttempts++;
+                    alert(`Clearance Denied. ${attemptsLeft} attempts left.`);
+                }
+            } else {
+                alert("Password must be alphanumeric.");
+            }
+
+            if (unlockAttempts >= maxAttempts) {
+                alert("You have been locked out after multiple failed attempts.");
+            }
+        }
+
+        function toggleClassifiedFiles(level) {
+            const files = document.getElementById(`classified-files-level-${level}`);
+            if (!unlockedLevels[`Level ${level}`]) {
+                unlockClassifiedFiles(level);
+            } else {
+                lockClassifiedFiles(level);
+            }
+        }
+
+        function lockClassifiedFiles(level) {
+            const files = document.getElementById(`classified-files-level-${level}`);
+            if (confirm(`Do you want to lock Classified Files (Level ${level})?`)) {
+                files.classList.add("hidden");
+                unlockedLevels[`Level ${level}`] = false;
+                document.querySelector(`button[onclick="toggleClassifiedFiles(${level})"]`).textContent = `Request Access to Classified Files (Level ${level})`;
+            }
+        }
+
+        function toggleAdminFiles() {
+            const adminFiles = document.getElementById("admin-files");
+            if (!unlockedLevels["Admin"]) {
+                unlockAdminFiles();
+            } else {
+                lockAdminFiles();
+            }
+        }
+
+        function lockAdminFiles() {
+            const adminFiles = document.getElementById("admin-files");
+            if (confirm("Do you want to lock Admin Files?")) {
+                adminFiles.classList.add("hidden");
+                unlockedLevels["Admin"] = false;
+                document.querySelector('button[onclick="toggleAdminFiles()"]').textContent = "Request Access to Admin Files";
+            }
+        }
+
+        function startSecurityTimeout() {
+            clearTimeout(securityTimeout);
+            securityTimeout = setTimeout(() => {
+                const files = document.querySelectorAll(".classified-files");
+                const adminFiles = document.getElementById("admin-files");
+                
+                files.forEach(file => {
+                    if (!file.classList.contains("hidden")) {
+                        file.classList.add("hidden");
+                        alert("Classified files have been locked due to inactivity.");
+                    }
+                });
+
+                if (!adminFiles.classList.contains("hidden")) {
+                    adminFiles.classList.add("hidden");
+                    alert("Admin files have been locked due to inactivity.");
+                }
+            }, 300000); // 5 minutes of inactivity
+        }
+    </script>
+    <style>
+        body {
+            font-family: 'Courier New', Courier, monospace;
+            background-color: #121212;
+            color: #ccc;
+            margin: 0;
+            padding: 0;
+        }
+        a {
+            color: #ccc;
+            text-decoration: none;
+            font-weight: bold;
+        }
+        header {
+            background-image: url('valkyrie_banner.png');
+            background-size: 100% 300px;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+            text-align: center;
+            padding: 100px 20px;
+            position: relative;
+            color: #fff;
+        }
+
+        header h1 {
+            font-size: 48px;
+            margin: 0;
+        }
+
+        header p {
+            margin-top: 10px;
+            font-size: 18px;
+            color: rgba(255, 255, 255, 0.8);
+        }
+
+        .navbar {
+            background-color: #333;
+            overflow: hidden;
+            text-align: center;
+            border-bottom: 2px solid #444;
+        }
+
+        .navbar ul {
+            list-style-type: none;
+            margin: 0;
+            padding: 0;
+        }
+
+        .navbar ul li {
+            display: inline;
+            padding: 14px 20px;
+        }
+
+        .navbar ul li a {
+            color: #fff;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .navbar ul li a:hover {
+            background-color: #444;
+        }
+
+        .section {
+            padding: 40px 20px;
+            text-align: center;
+        }
+
+        h2 {
+            color: #fff;
+            font-size: 28px;
+        }
+
+        button {
+            background-color: #444;
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            cursor: pointer;
+            font-size: 16px;
+            margin-top: 20px;
+        }
+
+        button:hover {
+            background-color: #555;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .classified-files {
+            margin-top: 20px;
+        }
+
+        footer {
+            background-color: #1b1b1b;
+            padding: 10px;
+            text-align: center;
+            color: #888;
+            border-top: 2px solid #444;
+        }
+        ul, li {
+            list-style: none;
+        }
+    </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>SCP Site-11</title>
+</head>
+<body>
+    <header>
+        <div class="scp-logo">
+            <h1>SCP Foundation</h1>
+            <p>Secure. Contain. Protect.</p>
+        </div>
+    </header>
+
+    <nav class="navbar">
+        <ul>
+            <li><a href="#overview">Overview</a></li>
+            <li><a href="#files">Classified Files</a></li>
+            <li><a href="#personnel">Personnel</a></li>
+            <li><a href="#contact">Contact</a></li>
+            <li><a href="#research">Research</a></li>
+            <li><a href="#reports">Incident Reports</a></li>
+            <li><a href="#admin-files">Admin Files</a></li>
+        </ul>
+    </nav>
+
+    <section id="overview" class="section">
+        <h2>Welcome to Site Valkyrie</h2>
+        <p>Site Valkyrie is one of the most secretive and secure SCP Foundation facilities, located deep underground and hidden from the public eye. This site is responsible for containing some of the most dangerous SCP anomalies known to the Foundation, including those with Keter and Thaumiel classifications.</p>
+        <p>Site Valkyrie has been operational since 19██, serving as a primary research and containment hub. It features the latest in anomalous detection technology, including an advanced AI system and bio-secure entry points. Only personnel with proper clearance are allowed access beyond the entry levels.</p>
+        <p>Recent improvements to Site Valkyrie include the integration of automated defenses, reinforced containment cells, and enhanced security protocols, ensuring the safety of Foundation staff and preventing any unauthorized access.</p>
+    </section>
+
+    <section id="files" class="section">
+        <h2>Classified Files</h2>
+        <p>Access to classified files is restricted based on clearance levels. Please note that accessing files without proper authorization is a severe breach of Foundation protocol. You will be monitored at all times.</p>
+
+        <p><button onclick="toggleClassifiedFiles(1)">Request Access to Classified Files (Level 1)</button>
+        <div id="classified-files-level-1" class="classified-files hidden">
+            <ul>
+                <li><a href="http://scpwiki.com/scp-173" target="_blank">SCP-173 - The Sculpture</a></li>
+                <li><a href="http://scpwiki.com/scp-999" target="_blank">SCP-999 - The Tickle Monster</a></li>
+            </ul>
+        </div>
+        </p>
+        <p>
+        <button onclick="toggleClassifiedFiles(2)">Request Access to Classified Files (Level 2)</button>
+        <div id="classified-files-level-2" class="classified-files hidden">
+            <ul>
+                <li><a href="http://scpwiki.com/scp-049" target="_blank">SCP-049 - The Plague Doctor</a></li>
+                <li><a href="http://scpwiki.com/scp-096" target="_blank">SCP-096 - The Shy Guy</a></li>
+            </ul>
+        </div>
+        </p>
+        <p>
+        <button onclick="toggleClassifiedFiles(3)">Request Access to Classified Files (Level 3)</button>
+        <div id="classified-files-level-3" class="classified-files hidden">
+            <ul>
+                <li><a href="http://scpwiki.com/scp-682" target="_blank">SCP-682 - The Hard-to-Destroy Reptile</a></li>
+                <li><a href="http://scpwiki.com/scp-106" target="_blank">SCP-106 - The Old Man</a></li>
+            </ul>
+        </div>
+        </p>
+        <p>
+        <button onclick="toggleClassifiedFiles(4)">Request Access to Classified Files (Level 4)</button>
+        <div id="classified-files-level-4" class="classified-files hidden">
+            <ul>
+                <li><a href="http://scpwiki.com/scp-001" target="_blank">SCP-001 - When Day Breaks</a></li>
+                <li><a href="http://scpwiki.com/scp-231" target="_blank">SCP-231 - Special Personnel Requirements</a></li>
+            </ul>
+        </div>
+        </p>
+    </section>
+
+    <section class="section">
+        <h2>Administrator Files (level 5)</h2>
+        <p>O5 access is reserved for the Site Director, Overseer (O5) personnel, and The Administrator. Attempting to unlock these files without the proper credentials will result in severe disciplinary action, up to and including termination.</p>
+        <button onclick="toggleAdminFiles()">Request Access to Admin Files</button>
+        <div id="admin-files" class="classified-files hidden">
+            <ul>
+                <li><a href="https://docs.google.com/document/d/1Zxg49yfxLd2opmjaRHfjDKpBk3JYFPFhOlJlq2geTCE/edit?usp=sharing" target="_blank">O5 Council - Overseer Command</a></li>
+                <li><a href="https://docs.google.com/document/d/1eCf-AqwMs3yPdFRbDMCxZPgWcCpECNJxNSYiJCUbwLI/edit?usp=sharing" target="_blank">The Administrator - Site Command</a></li>
+            </ul>
+        </div>        
+    </section>
+    
+    <section id="personnel" class="section">
+        <h2>Foundation Personnel</h2>
+        <p>Following recent containment breaches, only the following personnel remain assigned to Site Valkyrie. All others have been declared missing or presumed ███████. Adherence to Foundation protocols and ethics is mandatory. Breach of conduct will result in immediate disciplinary action.</p>
+        <ul> 
+            <!--To be filled with actual personnel-->
+            <li>Dr. ███████ ████</li>
+            <li>Agent Harrison Blake</li>
+            <li>Dr. Rosalind Carter</li>
+            <li>MTF Commander ████-█</li>
+            <li>Researcher Jonathan ████</li>
+            <li>Containment Specialist Emily Greer</li>
+            <li>Security Officer █████ ████</li>
+            <li>Dr. Marcus ███████</li>
+            <li>Director Sylvia ███████</li>
+            <li>Janitor ██████████</li>
+        </ul>
+    </section>
+    
+    <section id="contact" class="section">
+        <h2>Contact</h2>
+        <p>To report an issue, breach, or anomaly within Site Valkyrie, please contact the Site Director immediately using the encrypted communication channels. Unauthorized communication attempts will be intercepted and monitored by Foundation AI systems.</p>
+    </section>
+
+    <section id="research" class="section">
+        <h2>Research</h2>
+        <p>Site Valkyrie hosts ongoing research into various SCP anomalies, focusing on better containment, neutralization, and understanding of their effects. Researchers are reminded to submit their reports and findings through the proper channels.</p>
+    </section>
+
+    <section id="reports" class="section">
+        <h2>Incident Reports</h2>
+        <p>Incident reports regarding containment breaches, MTF deployment, and classified operations are available only to personnel with Level 4 clearance. Unauthorized access to these reports is strictly forbidden.</p>
+    </section>
+
+    <footer>
+        <p>&copy; 20██ SCP Foundation. All rights reserved.</p>
+    </footer>
+</body>
+</html>
