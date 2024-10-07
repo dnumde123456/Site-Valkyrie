@@ -37,7 +37,7 @@ jobs:
         uses: actions/upload-pages-artifact@v3
         with:
           # Upload entire repository
-          path: 'https://github.com/dnumde123456/Site-valkyrie/blob/main/Site-valkyrie/site-11.html'
+          path: '.github/workflows/Site-valkyrie'
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
