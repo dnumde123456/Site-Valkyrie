@@ -33,7 +33,8 @@ a:hover {
 
 header {
     background-image: url('valkyrie_banner.png');
-    background-size: 100%;
+    background-width: 100%;
+    bacground-height: cover;
     background-repeat: no-repeat;
     text-align: center;
     padding: 80px 20px;
