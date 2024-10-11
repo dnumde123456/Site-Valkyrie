@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="mobilestyle.css">
+    <script src="script.js"></script>
+    <link rel="icon" type="image/x-icon" href="favicon.png">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>SCP Site Valkyrie</title>
+
+</head>
+<body>
+
+<section id="files" class="section">
+    <h2>Classified Files</h2>
+    <p>Access to classified files is restricted based on clearance levels. Please note that accessing files without proper authorization is a severe breach of Foundation protocol. You will be monitored at all times.</p>
+
+    <div>
+        <input type="text" id="access-password" placeholder="Enter Access Password">
+        <button class="button" onclick="unlockFiles()">Request Access</button>
+    </div>
+
+    <div id="access-error" class="error-message hidden">
+        <span class="close-btn" onclick="hideError('access-error')">X</span>
+        Incorrect password. Please try again.
+    </div>
+
+    <div id="locked-out-message" class="error-message hidden">
+        <span class="close-btn" onclick="hideError('locked-out-message')">X</span>
+        Due to too many tries you have been locked out. Please try again later.
+    </div>
+
+    <div id="timeout-message" class="error-message hidden">
+        <span class="close-btn" onclick="hideError('timeout-message')">X</span>
+        Session timed out. Please re-enter your password.
+    </div>
+
+    <div id="classified-files-level-1" class="classified-files hidden">
+        <h3>Level 1 Files</h3>
+        <ul>
+            <li><a href="https://docs.google.com/document/d/1HNu-qqPYejZ8RBW3wyFKxkpjfeE9A3XWRjKDmFyZI0o/edit?usp=sharing" target="_blank">Welcome to site valkyrie!</a></li>
+            <li><a href="#">[REDACTED]</a></li>
+        </ul>
+    </div>
+
+    <div id="classified-files-level-2" class="classified-files hidden">
+        <h3>Level 2 Files</h3>
+        <ul>
+            <li><a href="http://scpwiki.com/scp-049" target="_blank">SCP-049 - The Plague Doctor</a></li>
+            <li><a href="http://scpwiki.com/scp-096" target="_blank">SCP-096 - The Shy Guy</a></li>
+        </ul>
+    </div>
+
+    <div id="classified-files-level-3" class="classified-files hidden">
+        <h3>Level 3 Files</h3>
+        <ul>
+            <li><a href="http://scpwiki.com/scp-682" target="_blank">SCP-682 - The Hard-to-Destroy Reptile</a></li>
+            <li><a href="http://scpwiki.com/scp-106" target="_blank">SCP-106 - The Old Man</a></li>
+        </ul>
+    </div>
+
+    <div id="classified-files-level-4" class="classified-files hidden">
+        <h3>Level 4 Files</h3>
+        <ul>
+            <li><a href="https://docs.google.com/document/d/10f1xdiggPRszJ8nJ2y79_ifNbmkmAEH8GmJ4tVNpjfs/edit?usp=sharing" target="_blank">List of all SCP anomalies on-site</a></li>
+            <li><a href="http://scpwiki.com/scp-231" target="_blank">SCP-231 - Special Personnel Requirements</a></li>
+        </ul>
+    </div>
+
+    <div id="classified-files-level-5" class="classified-files hidden">
+        <h3>Level 5 Files</h3>
+        <ul>
+            <li><a href="https://docs.google.com/document/d/1Zxg49yfxLd2opmjaRHfjDKpBk3JYFPFhOlJlq2geTCE/edit?usp=sharing" target="_blank">O5 Council - Overseer Command</a></li>
+            <li><a href="https://docs.google.com/document/d/1eCf-AqwMs3yPdFRbDMCxZPgWcCpECNJxNSYiJCUbwLI/edit?usp=sharing" target="_blank">The Administrator - Site Command</a></li>
+        </ul>
+    </div>
+
+</section>
+
+</body>
+</html>
