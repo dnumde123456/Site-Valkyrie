@@ -1,0 +1,18 @@
+# Basic configuration for your Jekyll site
+title: "Site Valkyrie"
+description: "A simple Jekyll site for displaying files without .html extensions."
+baseurl: ""  # Leave this empty unless you're using a project page
+url: "https://dnumde123456.github.io"  # Your site's URL
+
+# Enable pretty permalinks (remove .html extension)
+permalink: pretty
+
+# Other optional settings you can add:
+markdown: kramdown
+theme: minima  # Default theme for Jekyll, you can replace this if needed
+
+# Exclude certain files/folders from processing
+exclude:
+  - Gemfile
+  - Gemfile.lock
+  - node_modules/
