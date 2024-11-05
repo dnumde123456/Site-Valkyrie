@@ -11,6 +11,7 @@ h2, p, li, button, a {
 body {
     font-family: scp;
     background-image: url('spherewave.gif');
+    background-color: radial-gradient(#0e52, #000 110%);
     background-repeat: no-repeat;
     background-attachment: fixed;
     background-size: cover;
